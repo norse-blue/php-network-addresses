@@ -1,0 +1,71 @@
+{
+  "name": "norse-blue/network-addresses",
+  "description": "PHP Network Addresses is a PHP library that simplifies working with network addresses.",
+  "keywords": [
+    "network",
+    "addresses",
+    "address",
+    "ip",
+    "ipv4",
+    "ipv6",
+    "mac"
+  ],
+  "homepage": "https://norse.blue/open-source/php-network-addresses",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/norse-blue/php-network-addresses/issues",
+    "source": "https://github.com/norse-blue/php-network-addresses"
+  },
+  "authors": [
+    {
+      "name": "Axel Pardemann",
+      "email": "axel.pardemann@norse.blue"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "require": {
+    "php": "^8.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpunit/phpunit": "^9.5",
+    "squizlabs/php_codesniffer": "^3.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "NorseBlue\\NetworkAddresses\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "NorseBlue\\NetworkAddresses\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "analyze": "phpstan analyze --ansi",
+    "analyze:github": "phpstan analyze --error-format=github",
+    "check": [
+      "@style:check",
+      "@analyze",
+      "@test"
+    ],
+    "check:coverage": [
+      "@style:check",
+      "@analyze",
+      "@test:coverage"
+    ],
+    "style:check": "phpcs",
+    "style:fix": "phpcbf || phpcs",
+    "test": "phpunit --colors=always",
+    "test:coverage": [
+      "@putenv XDEBUG_MODE=coverage",
+      "phpunit --colors=always --coverage-text --coverage-clover=./build/coverage.xml --coverage-html=./build/coverage"
+    ]
+  }
+}
