@@ -156,3 +156,31 @@ it('gets the subnet mask formatted as hex string', function () {
     expect(IPv4SubnetMask::fromBits(24)->format('hex'))->toBe('ff.ff.ff.00');
     expect(IPv4SubnetMask::fromBits(32)->format('hex'))->toBe('ff.ff.ff.ff');
 });
+
+it('throws an exception when subnet mask has a skipped bit in octet1', function () {
+    expect(IPv4SubnetMask::parse('247.0.0.0'));
+})->throws(ValidationException::class, '`NorseBlue\NetworkAddresses\IPSubnetMask\IPv4SubnetMask->octet1`: Value `247` is not a valid mask octet number.');
+
+it('throws an exception when subnet mask has a skipped bit in octet2', function () {
+    expect(IPv4SubnetMask::parse('255.247.0.0'));
+})->throws(ValidationException::class, '`NorseBlue\NetworkAddresses\IPSubnetMask\IPv4SubnetMask->octet2`: Value `247` is not a valid mask octet number.');
+
+it('throws an exception when subnet mask has a skipped bit in octet3', function () {
+    expect(IPv4SubnetMask::parse('255.255.247.0'));
+})->throws(ValidationException::class, '`NorseBlue\NetworkAddresses\IPSubnetMask\IPv4SubnetMask->octet3`: Value `247` is not a valid mask octet number.');
+
+it('throws an exception when subnet mask has a skipped bit in octet4', function () {
+    expect(IPv4SubnetMask::parse('255.255.255.247'));
+})->throws(ValidationException::class, '`NorseBlue\NetworkAddresses\IPSubnetMask\IPv4SubnetMask->octet4`: Value `247` is not a valid mask octet number.');
+
+it('throws an exception when subnet mask has a skipped bit between octet1 and octet2', function () {
+    expect(IPv4SubnetMask::parse('254.128.0.0'));
+})->throws(UnexpectedValueException::class, 'Subnet mask is invalid. Skipped bit found between octet 1 and 2.');
+
+it('throws an exception when subnet mask has a skipped bit between octet2 and octet3', function () {
+    expect(IPv4SubnetMask::parse('255.254.128.0'));
+})->throws(UnexpectedValueException::class, 'Subnet mask is invalid. Skipped bit found between octet 2 and 3.');
+
+it('throws an exception when subnet mask has a skipped bit between octet3 and octet4', function () {
+    expect(IPv4SubnetMask::parse('255.255.254.128'));
+})->throws(UnexpectedValueException::class, 'Subnet mask is invalid. Skipped bit found between octet 3 and 4.');

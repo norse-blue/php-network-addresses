@@ -34,6 +34,8 @@ class IPv4SubnetMask implements IPSubnetMask
     ) {
         $this->validateAttributes();
 
+        $this->validateOctets();
+
         $this->bits = 32 - (int) log(((($octet1 << 24) + ($octet2 << 16) + ($octet3 << 8) + $this->octet4) ^ 0xFFFFFFFF) + 1, 2);
     }
 
@@ -118,5 +120,19 @@ class IPv4SubnetMask implements IPSubnetMask
         }
 
         return implode('.', $octets);
+    }
+
+    private function validateOctets(): void
+    {
+        for ($i = 4; $i > 1; $i--) {
+            if ($this->{"octet$i"} !== 0) {
+                for ($j = 1; $j < $i; $j++) {
+                    if ($this->{"octet$j"} !== 255) {
+                        throw new UnexpectedValueException("Subnet mask is invalid. Skipped bit found between octet $j and $i.");
+                    }
+                }
+                break;
+            }
+        }
     }
 }
