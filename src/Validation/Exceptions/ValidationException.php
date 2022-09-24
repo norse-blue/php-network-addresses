@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\NetworkAddresses\Exceptions;
+namespace NorseBlue\NetworkAddresses\Validation\Exceptions;
 
-use JetBrains\PhpStorm\Pure;
-use NorseBlue\NetworkAddresses\Validation\ValidationResult;
+use NorseBlue\NetworkAddresses\Validation\AttributeValidationResult;
 use RuntimeException;
 
 class ValidationException extends RuntimeException
 {
     /**
-     * @param array<string, ValidationResult[]> $validationErrors
+     * @param  array<string, array<AttributeValidationResult>>  $validationErrors
      */
-    #[Pure]
     public function __construct(
         object $validatableObject,
         array $validationErrors
@@ -27,6 +25,6 @@ class ValidationException extends RuntimeException
             }
         }
 
-        parent::__construct("Validation errors:" . PHP_EOL . implode(PHP_EOL, $messages));
+        parent::__construct('Validation errors:'.PHP_EOL.implode(PHP_EOL, $messages));
     }
 }

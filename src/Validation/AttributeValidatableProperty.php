@@ -2,52 +2,46 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\NetworkAddresses\Reflection;
+namespace NorseBlue\NetworkAddresses\Validation;
 
-use JetBrains\PhpStorm\Immutable;
-use JetBrains\PhpStorm\Pure;
-use NorseBlue\NetworkAddresses\Validator;
 use ReflectionAttribute;
 use ReflectionProperty;
 
 class AttributeValidatableProperty
 {
-    #[Immutable]
     public string $name;
 
-    private object $validatableObject;
+    private ReflectionProperty $reflectedProperty;
 
-    private ReflectionProperty $reflectionProperty;
+    private object $validatableObject;
 
     public function __construct(
         object $validatableObject,
         ReflectionProperty $reflectionProperty
     ) {
         $this->validatableObject = $validatableObject;
-        $this->reflectionProperty = $reflectionProperty;
-        $this->name = $this->reflectionProperty->name;
+        $this->reflectedProperty = $reflectionProperty;
+        $this->name = $this->reflectedProperty->name;
     }
 
     /**
-     * @return Validator[]
+     * @return array<AttributeValidator>
      */
     public function getValidators(): array
     {
-        $attributes = $this->reflectionProperty->getAttributes(
-            Validator::class,
+        $attributes = $this->reflectedProperty->getAttributes(
+            AttributeValidator::class,
             ReflectionAttribute::IS_INSTANCEOF
         );
 
-        /** @var Validator[] */
         return array_map(
             static fn (ReflectionAttribute $attribute) => $attribute->newInstance(),
             $attributes
         );
     }
 
-    #[Pure]
     public function getValue(): mixed
     {
-        return $this->reflectionProperty->getValue($this->validatableObject);
+        return $this->reflectedProperty->getValue($this->validatableObject);
     }
 }

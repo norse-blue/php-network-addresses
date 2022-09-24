@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\NetworkAddresses\Traits;
+namespace NorseBlue\NetworkAddresses\Concerns;
 
-use NorseBlue\NetworkAddresses\Reflection\AttributeValidatableClass;
+use NorseBlue\NetworkAddresses\Validation\AttributeValidatableClass;
 
 trait HasValidationAttributes
 {

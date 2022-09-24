@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace NorseBlue\NetworkAddresses\Reflection;
+namespace NorseBlue\NetworkAddresses\Validation;
 
-use NorseBlue\NetworkAddresses\Exceptions\ValidationException;
+use NorseBlue\NetworkAddresses\Validation\Exceptions\ValidationException;
 use ReflectionClass;
 use ReflectionProperty;
 
 class AttributeValidatableClass
 {
-    /** @var ReflectionClass<object>  */
-    private ReflectionClass $reflectionClass;
+    private ReflectionClass $reflection;
+
     private object $validatableObject;
 
     public function __construct(object $validatableObject)
     {
         $this->validatableObject = $validatableObject;
-        $this->reflectionClass = new ReflectionClass($this->validatableObject);
+        $this->reflection = new ReflectionClass($this->validatableObject);
     }
 
     /**
-     * @return AttributeValidatableProperty[]
+     * @return array<AttributeValidatableProperty>
      */
     public function getProperties(): array
     {
         $publicProperties = array_filter(
-            $this->reflectionClass->getProperties(),
+            $this->reflection->getProperties(),
             static fn (ReflectionProperty $property) => ! $property->isStatic()
         );
 
