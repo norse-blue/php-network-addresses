@@ -9,5 +9,5 @@ use NorseBlue\NetworkAddresses\IPv4\Contracts\Address\IPv4AddressParseable;
 interface IPv4Address extends IPv4AddressParseable
 {
     /** @return array<string, int> */
-    public function groups(): array;
+    public function octets(): array;
 }
