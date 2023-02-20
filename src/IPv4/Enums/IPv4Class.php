@@ -6,7 +6,7 @@ namespace NorseBlue\NetworkAddresses\IPv4\Enums;
 
 use NorseBlue\NetworkAddresses\IPv4\OLDIPv4Address;
 
-enum IPv4Class : string
+enum IPv4Class: string
 {
     public const MASK_A = 0x00;
 
