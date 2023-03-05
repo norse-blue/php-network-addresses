@@ -6,8 +6,6 @@ namespace NorseBlue\NetworkAddresses\IPv4\Enums;
 
 enum IPv4Format: string
 {
-    case Binary = 'bin';
-    case Decimal = 'dec';
-    case Hexadecimal = 'hex';
-    case Octal = 'octal';
+    case Traditional = 'traditional';
+    case Cidr = 'cidr';
 }

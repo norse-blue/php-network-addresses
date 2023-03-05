@@ -28,7 +28,7 @@ it('it detects the given value as invalid because it is not an integer', functio
     $result = $validator->validate('string');
 
     $this->assertFalse($result->isValid);
-    $this->assertEquals('Value `string` has to be an integer.', $result->message);
+    $this->assertEquals('The value of $value has to be an integer, `string` given.', $result->message);
 });
 
 it('it detects the given value as invalid because the given value is lower than the lower bound', function () {

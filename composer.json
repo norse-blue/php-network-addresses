@@ -1,75 +1,76 @@
 {
-  "name": "norse-blue/network-addresses",
-  "description": "PHP Network Addresses is a PHP library that simplifies working with network addresses.",
-  "keywords": [
-    "network",
-    "addresses",
-    "address",
-    "ip",
-    "ipv4",
-    "ipv6",
-    "mac"
-  ],
-  "homepage": "https://norse.blue/open-source/php-network-addresses",
-  "license": "MIT",
-  "support": {
-    "issues": "https://github.com/norse-blue/php-network-addresses/issues",
-    "source": "https://github.com/norse-blue/php-network-addresses"
-  },
-  "authors": [
-    {
-      "name": "Axel Pardemann",
-      "email": "axel.pardemann@norse.blue"
-    }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "preferred-install": "dist",
-    "sort-packages": true,
-    "optimize-autoloader": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true
-    }
-  },
-  "require": {
-    "php": "^8.2"
-  },
-  "require-dev": {
-    "laravel/pint": "^1.5",
-    "pestphp/pest": "^2.0",
-    "phpstan/phpstan": "^1.9",
-    "phpunit/phpunit": "^10.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "NorseBlue\\NetworkAddresses\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "NorseBlue\\NetworkAddresses\\Tests\\": "tests/"
-    }
-  },
-  "scripts": {
-    "check": [
-      "@pint:check",
-      "@test",
-      "@stan"
+    "name" : "norse-blue/network-addresses",
+    "description" : "PHP Network Addresses is a PHP library that simplifies working with network addresses.",
+    "keywords" : [
+        "network",
+        "addresses",
+        "address",
+        "ip",
+        "ipv4",
+        "ipv6",
+        "mac"
     ],
-    "check:coverage": [
-      "@pint:check",
-      "@test:coverage",
-      "@stan"
+    "homepage" : "https://norse.blue/open-source/php-network-addresses",
+    "license" : "MIT",
+    "support" : {
+        "issues" : "https://github.com/norse-blue/php-network-addresses/issues",
+        "source" : "https://github.com/norse-blue/php-network-addresses"
+    },
+    "authors" : [
+        {
+            "name" : "Axel Pardemann",
+            "email" : "axel.pardemann@norse.blue"
+        }
     ],
-    "pint": "pint",
-    "pint:check": "pint --test -v",
-    "stan": "phpstan analyze --ansi",
-    "stan:github": "phpstan analyze --error-format=github",
-    "test": "pest --colors=always",
-    "test:coverage": [
-      "@putenv XDEBUG_MODE=coverage",
-      "pest --colors=always --coverage --coverage-text --coverage-clover=./build/coverage.xml --coverage-html=./build/coverage"
-    ]
-  }
+    "minimum-stability" : "dev",
+    "prefer-stable" : true,
+    "config" : {
+        "preferred-install" : "dist",
+        "sort-packages" : true,
+        "optimize-autoloader" : true,
+        "allow-plugins" : {
+            "pestphp/pest-plugin" : true
+        }
+    },
+    "require" : {
+        "php" : "^8.2"
+    },
+    "require-dev" : {
+        "laravel/pint" : "^1.5",
+        "pestphp/pest" : "^2.0",
+        "phpstan/phpstan" : "^1.9",
+        "phpunit/phpunit" : "^10.0"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "NorseBlue\\NetworkAddresses\\" : "src/"
+        }
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "NorseBlue\\NetworkAddresses\\Tests\\" : "tests/"
+        }
+    },
+    "scripts" : {
+        "check" : [
+            "@pint:check",
+            "@test",
+            "@stan"
+        ],
+        "check:coverage" : [
+            "@pint:check",
+            "@test:coverage",
+            "@stan"
+        ],
+        "pint" : "pint",
+        "pint:check" : "pint --test -v",
+        "stan" : "phpstan analyze --ansi --xdebug",
+        "stan:github" : "phpstan analyze --ansi --xdebug --error-format=github",
+        "test" : "pest",
+        "test:coverage" : [
+            "@putenv XDEBUG_MODE=coverage",
+            "pest --coverage --coverage-text --coverage-clover=./build/coverage.xml --coverage-html=./build/coverage"
+        ],
+        "test:output" : "pest --disallow-test-output"
+    }
 }

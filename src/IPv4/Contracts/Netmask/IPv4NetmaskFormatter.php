@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace NorseBlue\NetworkAddresses\IPv4\Contracts\Netmask;
 
-interface IPv4NetmaskFormatter
+use NorseBlue\NetworkAddresses\IPv4\IPv4Netmask;
+use NorseBlue\NetworkAddresses\Contracts\Formatter;
+
+interface IPv4NetmaskFormatter extends Formatter
 {
-    public function format(): string;
+    public static function using(IPv4Netmask $netmask): self;
 }

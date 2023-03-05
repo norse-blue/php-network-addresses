@@ -8,8 +8,14 @@ use NorseBlue\NetworkAddresses\Validation\Exceptions\ValidationException;
 use ReflectionClass;
 use ReflectionProperty;
 
+/**
+ * @template T of object
+ */
 class AttributeValidatableClass
 {
+    /**
+     * @var ReflectionClass<object>
+     */
     private ReflectionClass $reflection;
 
     private object $validatableObject;

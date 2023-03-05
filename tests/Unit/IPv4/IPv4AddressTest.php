@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use NorseBlue\NetworkAddresses\IPv4\Contracts\IPv4Netmask;
-use NorseBlue\NetworkAddresses\IPv4\Enums\IPv4Format;
 use NorseBlue\NetworkAddresses\IPv4\IPv4Address;
 
 test('creates an IPv4Address from string', function () {
@@ -162,20 +161,38 @@ test('creates an IPv4Address from string with CIDR notation', function () {
         ->and($ip_address->netmask->bits)->toBe(24);
 });
 
+test('creates an IPv4Address from string replacing netmask with second parameter', function () {
+    $ip_address = IPv4Address::parse('192.168.1.254 0.0.0.0', netmask: '255.255.255.0');
+    expect($ip_address->octet1)->toBe(192)
+        ->and($ip_address->octet2)->toBe(168)
+        ->and($ip_address->octet3)->toBe(1)
+        ->and($ip_address->octet4)->toBe(254)
+        ->and($ip_address->netmask)->toBeInstanceOf(IPv4Netmask::class)
+        ->and($ip_address->netmask->bits)->toBe(24);
+
+    $ip_address = IPv4Address::parse('192.168.1.254/0', netmask: '255.255.255.0');
+    expect($ip_address->octet1)->toBe(192)
+        ->and($ip_address->octet2)->toBe(168)
+        ->and($ip_address->octet3)->toBe(1)
+        ->and($ip_address->octet4)->toBe(254)
+        ->and($ip_address->netmask)->toBeInstanceOf(IPv4Netmask::class)
+        ->and($ip_address->netmask->bits)->toBe(24);
+});
+
 it('throws an exception when ip address octet1 is greater than the max value', function () {
-    expect(IPv4Address::parse('256.0.0.0'));
+    IPv4Address::parse('256.0.0.0');
 })->throws(UnexpectedValueException::class, "IP address '256.0.0.0' is not valid.");
 
 it('throws an exception when ip address octet2 is greater than the max value', function () {
-    expect(IPv4Address::parse('255.256.0.0'));
+    IPv4Address::parse('255.256.0.0');
 })->throws(UnexpectedValueException::class, "IP address '255.256.0.0' is not valid.");
 
 it('throws an exception when ip address octet3 is greater than the max value', function () {
-    expect(IPv4Address::parse('255.255.256.0'));
+    IPv4Address::parse('255.255.256.0');
 })->throws(UnexpectedValueException::class, "IP address '255.255.256.0' is not valid.");
 
 it('throws an exception when ip address octet4 is greater than the max value', function () {
-    expect(IPv4Address::parse('255.255.255.256'));
+    IPv4Address::parse('255.255.255.256');
 })->throws(UnexpectedValueException::class, "IP address '255.255.255.256' is not valid.");
 
 test('creates an IPv4Address from int octets', function () {
@@ -279,11 +296,11 @@ test('creates an IPv4Address from array octets', function () {
 });
 
 it('throws an exception when octet and netmask arrays have more than 0 but less than 4 elements', function () {
-    expect(IPv4Address::build([1, 2, 3]));
+    IPv4Address::build([1, 2, 3]);
 })->throws(UnexpectedValueException::class, 'The given array must contain 0, 4 or 8 elements describing the octets for the IP address and the netmask.');
 
 it('throws an exception when octet and netmask arrays have more than 4 but less than 8 elements', function () {
-    expect(IPv4Address::build([1, 2, 3, 4, 5, 6, 7]));
+    IPv4Address::build([1, 2, 3, 4, 5, 6, 7]);
 })->throws(UnexpectedValueException::class, 'The given array must contain 0, 4 or 8 elements describing the octets for the IP address and the netmask.');
 
 it('truncates array to 8 elements when the octet and netmask arrays have more than 8 elements', function () {
@@ -393,24 +410,3 @@ test('retrieves the octets in an IPv4Address address with default prefix', funct
             'value4' => 0,
         ]);
 });
-
-//
-//it('gets the ip address as a decimal string', function () {
-//    expect((string) IPv4Address::fromOctets([192, 168, 1, 254]))->toBe('192.168.1.254');
-//});
-//
-//it('gets the ip address formatted as decimal string', function () {
-//    expect(IPv4Address::fromOctets([192, 168, 1, 254])->format(IPv4Format::Decimal))->toBe('192.168.1.254');
-//});
-//
-//it('gets the ip address formatted as binary string', function () {
-//    expect(IPv4Address::fromOctets([192, 168, 1, 254])->format(IPv4Format::Binary))->toBe('11000000.10101000.00000001.11111110');
-//});
-//
-//it('gets the ip address formatted as octal string', function () {
-//    expect(IPv4Address::fromOctets([192, 168, 1, 254])->format(IPv4Format::Octal))->toBe('0300.0250.0001.0376');
-//});
-//
-//it('gets the ip address formatted as hex string', function () {
-//    expect(IPv4Address::fromOctets([192, 168, 1, 254])->format(IPv4Format::Hexadecimal))->toBe('c0.a8.01.fe');
-//});

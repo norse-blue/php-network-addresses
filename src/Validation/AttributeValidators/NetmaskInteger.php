@@ -20,7 +20,7 @@ class NetmaskInteger implements AttributeValidator
     public function validate(mixed $value): AttributeValidationResult
     {
         if (! is_int($value)) {
-            return AttributeValidationResult::invalid("Value `$value` has to be an integer.");
+            return AttributeValidationResult::invalid('The value of $value has to be an integer, `'.gettype($value).'` given.');
         }
 
         if (! in_array($value, self::VALID_INTEGERS, true)) {

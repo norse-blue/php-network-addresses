@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NorseBlue\NetworkAddresses\IPv4\Enums;
 
-use NorseBlue\NetworkAddresses\IPv4\OLDIPv4Address;
+use NorseBlue\NetworkAddresses\IPv4\IPv4Address;
 
 enum IPv4Class: string
 {
@@ -24,9 +24,9 @@ enum IPv4Class: string
     case D = 'D';
     case E = 'E';
 
-    public static function fromIPv4(string|OLDIPv4Address $ip): self
+    public static function fromIPv4(string|IPv4Address $ip): self
     {
-        $ip = (is_string($ip)) ? OLDIPv4Address::parse($ip) : $ip;
+        $ip = (is_string($ip)) ? IPv4Address::parse($ip) : $ip;
 
         return match (true) {
             (($ip->octet1 & self::MASK_E) === self::MASK_E) => self::E,
