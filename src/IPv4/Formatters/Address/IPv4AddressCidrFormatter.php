@@ -16,7 +16,7 @@ readonly class IPv4AddressCidrFormatter implements IPv4AddressFormatter
 
     public function format(): string
     {
-        return "{$this->ip_address->octet1}.{$this->ip_address->octet2}.{$this->ip_address->octet3}.{$this->ip_address->octet4}" . $this->ip_address->netmask->format(IPv4Format::Cidr);
+        return "{$this->ip_address->octet1}.{$this->ip_address->octet2}.{$this->ip_address->octet3}.{$this->ip_address->octet4}".$this->ip_address->netmask->format(IPv4Format::Cidr);
     }
 
     public static function using(IPv4Address $ip_address): IPv4AddressFormatter

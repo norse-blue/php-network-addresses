@@ -113,7 +113,7 @@ final readonly class IPv4Address implements IPv4AddressContract
     public function compare(mixed $something): int
     {
         if (! is_string($something) && ! is_array($something) && ! $something instanceof IPv4Address) {
-            throw new RuntimeException('Type IPv4Address and type `' . gettype($something) . '` are not comparable.');
+            throw new RuntimeException('Type IPv4Address and type `'.gettype($something).'` are not comparable.');
         }
 
         try {

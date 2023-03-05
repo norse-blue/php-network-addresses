@@ -35,14 +35,14 @@ final readonly class IPv4Netmask implements IPv4NetmaskContract
         $this->validateOctetJumps([$netmask1, $netmask2, $netmask3, $netmask4]);
 
         $this->bits = 32 - (int) log(
-                ((
-                        ($netmask1 << 24)
-                        + ($netmask2 << 16)
-                        + ($netmask3 << 8)
-                        + $this->netmask4
-                    ) ^ 0xFFFFFFFF) + 1,
-                2,
-            );
+            ((
+                ($netmask1 << 24)
+                + ($netmask2 << 16)
+                + ($netmask3 << 8)
+                + $this->netmask4
+            ) ^ 0xFFFFFFFF) + 1,
+            2,
+        );
     }
 
     public static function fromBits(int $bits): self
@@ -130,7 +130,7 @@ final readonly class IPv4Netmask implements IPv4NetmaskContract
                 for ($j = 0; $j < $i; $j++) {
                     if ($netmask[$j] !== 255) {
                         throw new UnexpectedValueException(
-                            'The given netmask is invalid. Skipped bit found between netmask' . ($j + 1) . ' and netmask' . ($i + 1) . '.'
+                            'The given netmask is invalid. Skipped bit found between netmask'.($j + 1).' and netmask'.($i + 1).'.'
                         );
                     }
                 }
@@ -146,7 +146,7 @@ final readonly class IPv4Netmask implements IPv4NetmaskContract
     public function compare(mixed $something): int
     {
         if (! is_string($something) && ! is_array($something) && ! $something instanceof IPv4Netmask) {
-            throw new RuntimeException('Type IPv4Netmask and type `' . gettype($something) . '` are not comparable.');
+            throw new RuntimeException('Type IPv4Netmask and type `'.gettype($something).'` are not comparable.');
         }
 
         try {

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use NorseBlue\NetworkAddresses\IPv4\Enums\IPv4Format;
 use NorseBlue\NetworkAddresses\IPv4\IPv4Address;
 

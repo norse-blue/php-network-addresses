@@ -2,8 +2,8 @@
 
 namespace NorseBlue\NetworkAddresses\IPv4\Contracts\Netmask;
 
-use NorseBlue\NetworkAddresses\IPv4\IPv4Netmask;
 use NorseBlue\NetworkAddresses\Contracts\Formatter;
+use NorseBlue\NetworkAddresses\IPv4\IPv4Netmask;
 
 interface IPv4NetmaskFormatter extends Formatter
 {
