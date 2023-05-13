@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace NorseBlue\NetworkAddresses\IPv4;
 
+/**
+ * @codeCoverageIgnore
+ */
 final readonly class IPv4Regex
 {
     private const ADDRESS_DEFINITION = '(?<'.self::ADDRESS_CAPTURING_GROUPS[0].'>25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)\.(?<'.self::ADDRESS_CAPTURING_GROUPS[1].'>25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)\.(?<'.self::ADDRESS_CAPTURING_GROUPS[2].'>25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)\.(?<'.self::ADDRESS_CAPTURING_GROUPS[3].'>25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)';

@@ -6,6 +6,9 @@ use NorseBlue\NetworkAddresses\IPv4\IPv4Address;
 use RuntimeException;
 use Throwable;
 
+/**
+ * @codeCoverageIgnore
+ */
 class InvalidIPv4AddressRangeException extends RuntimeException
 {
     public function __construct(

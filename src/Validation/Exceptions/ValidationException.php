@@ -7,6 +7,9 @@ namespace NorseBlue\NetworkAddresses\Validation\Exceptions;
 use NorseBlue\NetworkAddresses\Validation\AttributeValidationResult;
 use RuntimeException;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ValidationException extends RuntimeException
 {
     /**
