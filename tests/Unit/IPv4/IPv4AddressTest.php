@@ -181,19 +181,19 @@ test('creates an IPv4Address from string replacing netmask with second parameter
 
 it('throws an exception when ip address octet1 is greater than the max value', function () {
     IPv4Address::parse('256.0.0.0');
-})->throws(UnexpectedValueException::class, "IP address '256.0.0.0' is not valid.");
+})->throws(UnexpectedValueException::class, "IPv4 address '256.0.0.0' is not valid.");
 
 it('throws an exception when ip address octet2 is greater than the max value', function () {
     IPv4Address::parse('255.256.0.0');
-})->throws(UnexpectedValueException::class, "IP address '255.256.0.0' is not valid.");
+})->throws(UnexpectedValueException::class, "IPv4 address '255.256.0.0' is not valid.");
 
 it('throws an exception when ip address octet3 is greater than the max value', function () {
     IPv4Address::parse('255.255.256.0');
-})->throws(UnexpectedValueException::class, "IP address '255.255.256.0' is not valid.");
+})->throws(UnexpectedValueException::class, "IPv4 address '255.255.256.0' is not valid.");
 
 it('throws an exception when ip address octet4 is greater than the max value', function () {
     IPv4Address::parse('255.255.255.256');
-})->throws(UnexpectedValueException::class, "IP address '255.255.255.256' is not valid.");
+})->throws(UnexpectedValueException::class, "IPv4 address '255.255.255.256' is not valid.");
 
 test('creates an IPv4Address from int octets', function () {
     $ip_address = IPv4Address::build(0, 0, 0, 0);
@@ -297,11 +297,11 @@ test('creates an IPv4Address from array octets', function () {
 
 it('throws an exception when octet and netmask arrays have more than 0 but less than 4 elements', function () {
     IPv4Address::build([1, 2, 3]);
-})->throws(UnexpectedValueException::class, 'The given array must contain 0, 4 or 8 elements describing the octets for the IP address and the netmask.');
+})->throws(UnexpectedValueException::class, 'The given array must contain 0, 4 or 8 elements describing the octets for the IPv4 address and the IPv4 netmask.');
 
 it('throws an exception when octet and netmask arrays have more than 4 but less than 8 elements', function () {
     IPv4Address::build([1, 2, 3, 4, 5, 6, 7]);
-})->throws(UnexpectedValueException::class, 'The given array must contain 0, 4 or 8 elements describing the octets for the IP address and the netmask.');
+})->throws(UnexpectedValueException::class, 'The given array must contain 0, 4 or 8 elements describing the octets for the IPv4 address and the IPv4 netmask.');
 
 it('truncates array to 8 elements when the octet and netmask arrays have more than 8 elements', function () {
     $ip_address = IPv4Address::build([172, 16, 23, 8, 255, 255, 255, 255, 255, 255, 255]);
@@ -409,4 +409,80 @@ test('retrieves the octets in an IPv4Address address with default prefix', funct
             'value3' => 1,
             'value4' => 0,
         ]);
+});
+
+test('caclulates the IPv4 network address', function () {
+    $ip_address = IPv4Address::parse('0.0.0.0')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('0.0.0.0/32');
+
+    $ip_address = IPv4Address::parse('127.0.0.1')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('127.0.0.1/32');
+
+    $ip_address = IPv4Address::parse('10.0.0.0')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('10.0.0.0/32');
+
+    $ip_address = IPv4Address::parse('10.0.0.0/8')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('10.0.0.0/32');
+
+    $ip_address = IPv4Address::parse('172.16.0.0')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('172.16.0.0/32');
+
+    $ip_address = IPv4Address::parse('172.16.0.0/16')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('172.16.0.0/32');
+
+    $ip_address = IPv4Address::parse('172.16.0.0/12')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('172.16.0.0/32');
+
+    $ip_address = IPv4Address::parse('192.168.1.0')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('192.168.1.0/32');
+
+    $ip_address = IPv4Address::parse('192.168.1.0/24')->networkAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('192.168.1.0/32');
+});
+
+test('caclulates the IPv4 broadcast address', function () {
+    $ip_address = IPv4Address::parse('0.0.0.0')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('0.0.0.0/32');
+
+    $ip_address = IPv4Address::parse('127.0.0.1')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('127.0.0.1/32');
+
+    $ip_address = IPv4Address::parse('10.0.0.0')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('10.0.0.0/32');
+
+    $ip_address = IPv4Address::parse('10.0.0.0/8')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('10.255.255.255/32');
+
+    $ip_address = IPv4Address::parse('172.16.0.0')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('172.16.0.0/32');
+
+    $ip_address = IPv4Address::parse('172.16.0.0/16')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('172.16.255.255/32');
+
+    $ip_address = IPv4Address::parse('172.16.0.0/12')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('172.31.255.255/32');
+
+    $ip_address = IPv4Address::parse('192.168.1.0')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('192.168.1.0/32');
+
+    $ip_address = IPv4Address::parse('192.168.1.0/24')->broadcastAddress();
+    expect($ip_address)->toBeInstanceOf(IPv4Address::class)
+        ->and($ip_address->format())->toBe('192.168.1.255/32');
 });

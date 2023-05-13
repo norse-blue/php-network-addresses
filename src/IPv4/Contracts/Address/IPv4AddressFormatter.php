@@ -7,5 +7,8 @@ use NorseBlue\NetworkAddresses\IPv4\IPv4Address;
 
 interface IPv4AddressFormatter extends Formatter
 {
-    public static function using(IPv4Address $ip_address): self;
+    /**
+     * @param  array<string, mixed>  $options
+     */
+    public static function using(IPv4Address $ip_address, array $options = []): self;
 }

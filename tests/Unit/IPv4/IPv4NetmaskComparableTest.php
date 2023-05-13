@@ -84,7 +84,7 @@ it('throws an exception when trying to compare to an invalid string', function (
     $netmask = IPv4Netmask::parse('255.255.255.0');
 
     $netmask->compare('this is not a netmask');
-})->throws(RuntimeException::class, 'The value of $something is not a valid netmask to compare to.');
+})->throws(RuntimeException::class, 'The value of $something is not a valid IPv4 netmask to compare to.');
 
 it('throws an exception when trying to compare to an invalid array', function () {
     $netmask = IPv4Netmask::parse('255.255.255.0');
@@ -95,4 +95,4 @@ it('throws an exception when trying to compare to an invalid array', function ()
         'not a',
         'netmask',
     ]);
-})->throws(RuntimeException::class, 'The value of $something is not a valid netmask to compare to.');
+})->throws(RuntimeException::class, 'The value of $something is not a valid IPv4 netmask to compare to.');

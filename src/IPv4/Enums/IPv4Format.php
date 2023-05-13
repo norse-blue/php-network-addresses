@@ -6,6 +6,7 @@ namespace NorseBlue\NetworkAddresses\IPv4\Enums;
 
 enum IPv4Format: string
 {
-    case Traditional = 'traditional';
+    case Binary = 'binary';
     case Cidr = 'cidr';
+    case Traditional = 'traditional';
 }

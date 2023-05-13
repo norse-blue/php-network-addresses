@@ -8,6 +8,7 @@ use Exception;
 use NorseBlue\NetworkAddresses\Concerns\HasValidationAttributes;
 use NorseBlue\NetworkAddresses\IPv4\Contracts\IPv4Netmask as IPv4NetmaskContract;
 use NorseBlue\NetworkAddresses\IPv4\Enums\IPv4Format;
+use NorseBlue\NetworkAddresses\IPv4\Formatters\Netmask\IPv4NetmaskBinaryFormatter;
 use NorseBlue\NetworkAddresses\IPv4\Formatters\Netmask\IPv4NetmaskCidrFormatter;
 use NorseBlue\NetworkAddresses\IPv4\Formatters\Netmask\IPv4NetmaskTraditionalFormatter;
 use NorseBlue\NetworkAddresses\Validation\AttributeValidators\IntegerBetween;
@@ -96,7 +97,7 @@ final readonly class IPv4Netmask implements IPv4NetmaskContract
         }
 
         if (! preg_match(IPv4Regex::NETMASK, $netmask, $raw_matches)) {
-            throw new UnexpectedValueException("The given netmask '$netmask' has not a valid format.");
+            throw new UnexpectedValueException("The given IPv4 netmask '$netmask' has not a valid format.");
         }
         $filtered_matches = array_filter($raw_matches, fn ($key) => in_array($key, array_merge(IPv4Regex::NETMASK_CAPTURING_GROUPS, [IPv4Regex::CIDR_CAPTURING_GROUP]), true), ARRAY_FILTER_USE_KEY);
         $netmask_values = array_map(fn ($value) => (int) $value, $filtered_matches);
@@ -130,7 +131,7 @@ final readonly class IPv4Netmask implements IPv4NetmaskContract
                 for ($j = 0; $j < $i; $j++) {
                     if ($netmask[$j] !== 255) {
                         throw new UnexpectedValueException(
-                            'The given netmask is invalid. Skipped bit found between netmask'.($j + 1).' and netmask'.($i + 1).'.'
+                            'The given IPv4 netmask is invalid. Skipped bit found between netmask'.($j + 1).' and netmask'.($i + 1).'.'
                         );
                     }
                 }
@@ -156,7 +157,7 @@ final readonly class IPv4Netmask implements IPv4NetmaskContract
                 default => $something,
             };
         } catch (Exception $exception) {
-            throw new RuntimeException('The value of $something is not a valid netmask to compare to.', previous: $exception);
+            throw new RuntimeException('The value of $something is not a valid IPv4 netmask to compare to.', previous: $exception);
         }
 
         return $this->bits <=> $compareTo->bits;
@@ -170,6 +171,7 @@ final readonly class IPv4Netmask implements IPv4NetmaskContract
     public function format(IPv4Format $format = IPv4Format::Cidr): string
     {
         $formatter = match ($format) {
+            IPv4Format::Binary => IPv4NetmaskBinaryFormatter::using($this),
             IPv4Format::Cidr => IPv4NetmaskCidrFormatter::using($this),
             IPv4Format::Traditional => IPv4NetmaskTraditionalFormatter::using($this),
         };

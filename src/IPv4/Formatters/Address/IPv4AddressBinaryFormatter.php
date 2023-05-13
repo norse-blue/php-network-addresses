@@ -8,7 +8,7 @@ use NorseBlue\NetworkAddresses\IPv4\Contracts\Address\IPv4AddressFormatter;
 use NorseBlue\NetworkAddresses\IPv4\Enums\IPv4Format;
 use NorseBlue\NetworkAddresses\IPv4\IPv4Address;
 
-readonly class IPv4AddressTraditionalFormatter implements IPv4AddressFormatter
+readonly class IPv4AddressBinaryFormatter implements IPv4AddressFormatter
 {
     /**
      * @param  array<string, mixed>  $options
@@ -19,10 +19,13 @@ readonly class IPv4AddressTraditionalFormatter implements IPv4AddressFormatter
 
     public function format(): string
     {
-        $str = "{$this->ip_address->octet1}.{$this->ip_address->octet2}.{$this->ip_address->octet3}.{$this->ip_address->octet4}";
+        $str = str_pad(decbin($this->ip_address->octet1), 8, '0', STR_PAD_LEFT)
+            .str_pad(decbin($this->ip_address->octet2), 8, '0', STR_PAD_LEFT)
+            .str_pad(decbin($this->ip_address->octet3), 8, '0', STR_PAD_LEFT)
+            .str_pad(decbin($this->ip_address->octet4), 8, '0', STR_PAD_LEFT);
 
         if (! isset($this->options['exclude-netmask']) || $this->options['exclude-netmask'] !== true) {
-            $str .= ' '.$this->ip_address->netmask->format(IPv4Format::Traditional);
+            $str .= ' '.$this->ip_address->netmask->format(IPv4Format::Binary);
         }
 
         return $str;

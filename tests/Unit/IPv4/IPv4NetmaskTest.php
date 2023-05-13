@@ -243,19 +243,19 @@ test('creates an IPv4Netmask from array octets', function () {
 
 it('throws an exception when netmask netmask1 greater than the max value', function () {
     IPv4Netmask::parse('256.0.0.0');
-})->throws(UnexpectedValueException::class, "The given netmask '256.0.0.0' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '256.0.0.0' has not a valid format.");
 
 it('throws an exception when netmask netmask2 greater than the max value', function () {
     IPv4Netmask::parse('255.256.0.0');
-})->throws(UnexpectedValueException::class, "The given netmask '255.256.0.0' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '255.256.0.0' has not a valid format.");
 
 it('throws an exception when netmask netmask3 greater than the max value', function () {
     IPv4Netmask::parse('255.255.256.0');
-})->throws(UnexpectedValueException::class, "The given netmask '255.255.256.0' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '255.255.256.0' has not a valid format.");
 
 it('throws an exception when netmask netmask4 greater than the max value', function () {
     IPv4Netmask::parse('255.255.255.256');
-})->throws(UnexpectedValueException::class, "The given netmask '255.255.255.256' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '255.255.255.256' has not a valid format.");
 
 test('retrieves the octets in an IPv4Netmask netmask with default prefix', function () {
     $netmask = IPv4Netmask::parse('0.0.0.0');
@@ -353,28 +353,28 @@ test('retrieves the octets in an IPv4Netmask netmask with custom prefix', functi
 
 it('throws an exception when netmask skips a bit in netmask1', function () {
     IPv4Netmask::parse('247.0.0.0');
-})->throws(UnexpectedValueException::class, "The given netmask '247.0.0.0' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '247.0.0.0' has not a valid format.");
 
 it('throws an exception when netmask skips a bit in netmask2', function () {
     IPv4Netmask::parse('255.247.0.0');
-})->throws(UnexpectedValueException::class, "The given netmask '255.247.0.0' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '255.247.0.0' has not a valid format.");
 
 it('throws an exception when netmask skips a bit in netmask3', function () {
     IPv4Netmask::parse('255.255.247.0');
-})->throws(UnexpectedValueException::class, "The given netmask '255.255.247.0' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '255.255.247.0' has not a valid format.");
 
 it('throws an exception when netmask skips a bit in netmask4', function () {
     IPv4Netmask::parse('255.255.255.247');
-})->throws(UnexpectedValueException::class, "The given netmask '255.255.255.247' has not a valid format.");
+})->throws(UnexpectedValueException::class, "The given IPv4 netmask '255.255.255.247' has not a valid format.");
 
 it('throws an exception when netmask skips a bit between netmask1 and netmask2', function () {
     IPv4Netmask::parse('254.128.0.0');
-})->throws(UnexpectedValueException::class, 'The given netmask is invalid. Skipped bit found between netmask1 and netmask2.');
+})->throws(UnexpectedValueException::class, 'The given IPv4 netmask is invalid. Skipped bit found between netmask1 and netmask2.');
 
 it('throws an exception when netmask skips a bit between netmask2 and netmask3', function () {
     IPv4Netmask::parse('255.254.128.0');
-})->throws(UnexpectedValueException::class, 'The given netmask is invalid. Skipped bit found between netmask2 and netmask3.');
+})->throws(UnexpectedValueException::class, 'The given IPv4 netmask is invalid. Skipped bit found between netmask2 and netmask3.');
 
 it('throws an exception when netmask skips a bit between netmask3 and netmask4', function () {
     IPv4Netmask::parse('255.255.254.128');
-})->throws(UnexpectedValueException::class, 'The given netmask is invalid. Skipped bit found between netmask3 and netmask4.');
+})->throws(UnexpectedValueException::class, 'The given IPv4 netmask is invalid. Skipped bit found between netmask3 and netmask4.');

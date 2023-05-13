@@ -8,6 +8,7 @@ use Exception;
 use NorseBlue\NetworkAddresses\Concerns\HasValidationAttributes;
 use NorseBlue\NetworkAddresses\IPv4\Contracts\IPv4Address as IPv4AddressContract;
 use NorseBlue\NetworkAddresses\IPv4\Enums\IPv4Format;
+use NorseBlue\NetworkAddresses\IPv4\Formatters\Address\IPv4AddressBinaryFormatter;
 use NorseBlue\NetworkAddresses\IPv4\Formatters\Address\IPv4AddressCidrFormatter;
 use NorseBlue\NetworkAddresses\IPv4\Formatters\Address\IPv4AddressTraditionalFormatter;
 use NorseBlue\NetworkAddresses\Validation\AttributeValidators\IntegerBetween;
@@ -39,7 +40,7 @@ final readonly class IPv4Address implements IPv4AddressContract
     public static function build(int|array $octet1, int $octet2 = null, int $octet3 = null, int $octet4 = null, int $netmask1 = 255, int $netmask2 = 255, int $netmask3 = 255, int $netmask4 = 255): self
     {
         if (is_array($octet1) && (count($octet1) !== 0 && count($octet1) !== 4 && count($octet1) < 8)) {
-            throw new UnexpectedValueException('The given array must contain 0, 4 or 8 elements describing the octets for the IP address and the netmask.');
+            throw new UnexpectedValueException('The given array must contain 0, 4 or 8 elements describing the octets for the IPv4 address and the IPv4 netmask.');
         }
 
         return match (is_int($octet1)) {
@@ -76,7 +77,7 @@ final readonly class IPv4Address implements IPv4AddressContract
         }
 
         if (! preg_match(IPv4Regex::ADDRESS, $address, $raw_matches)) {
-            throw new UnexpectedValueException("IP address '$address' is not valid.");
+            throw new UnexpectedValueException("IPv4 address '$address' is not valid.");
         }
 
         $filtered_matches = array_filter($raw_matches, fn ($key) => in_array($key, array_merge(IPv4Regex::ADDRESS_CAPTURING_GROUPS, [IPv4Regex::NETMASK_CAPTURING_GROUP]), true), ARRAY_FILTER_USE_KEY);
@@ -123,7 +124,7 @@ final readonly class IPv4Address implements IPv4AddressContract
                 default => $something,
             };
         } catch (Exception $exception) {
-            throw new RuntimeException('The value of $something is not a valid ip address to compare to.', previous: $exception);
+            throw new RuntimeException('The value of $something is not a valid IPv4 address to compare to.', previous: $exception);
         }
 
         foreach (range(1, 4) as $octet) {
@@ -142,11 +143,15 @@ final readonly class IPv4Address implements IPv4AddressContract
         return $this->compare($something) === 0;
     }
 
-    public function format(IPv4Format $format = IPv4Format::Cidr): string
+    /**
+     * @param  array<string, mixed>  $options
+     */
+    public function format(IPv4Format $format = IPv4Format::Cidr, array $options = []): string
     {
         $formatter = match ($format) {
-            IPv4Format::Cidr => IPv4AddressCidrFormatter::using($this),
-            IPv4Format::Traditional => IPv4AddressTraditionalFormatter::using($this),
+            IPv4Format::Binary => IPv4AddressBinaryFormatter::using($this, $options),
+            IPv4Format::Cidr => IPv4AddressCidrFormatter::using($this, $options),
+            IPv4Format::Traditional => IPv4AddressTraditionalFormatter::using($this, $options),
         };
 
         return $formatter->format();
@@ -155,5 +160,34 @@ final readonly class IPv4Address implements IPv4AddressContract
     public function __toString(): string
     {
         return $this->format();
+    }
+
+    public function networkAddress(): self
+    {
+        $network = long2ip(
+            ip2long($this->format(options: ['exclude-netmask' => true]))
+            & ip2long($this->netmask->format(IPv4Format::Traditional))
+        );
+
+        if ($network === false) {
+            throw new RuntimeException();
+        }
+
+        return IPv4Address::parse($network);
+    }
+
+    public function broadcastAddress(): self
+    {
+        $network = $this->networkAddress();
+        $broadcast = long2ip(
+            ip2long($network->format(options: ['exclude-netmask' => true]))
+            + pow(2, (32 - $this->netmask->bits)) - 1
+        );
+
+        if ($broadcast === false) {
+            throw new RuntimeException();
+        }
+
+        return IPv4Address::parse($broadcast);
     }
 }
