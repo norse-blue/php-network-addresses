@@ -32,14 +32,18 @@
             "pestphp/pest-plugin" : true
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    },
     "require" : {
         "php" : "^8.2"
     },
     "require-dev" : {
-        "laravel/pint" : "^1.5",
+        "laravel/pint" : "^1.6",
         "pestphp/pest" : "^2.0",
-        "phpstan/phpstan" : "^1.9",
-        "phpunit/phpunit" : "^10.0"
+        "phpstan/phpstan" : "^1.10"
     },
     "autoload" : {
         "psr-4" : {
@@ -64,13 +68,27 @@
         ],
         "pint" : "pint",
         "pint:check" : "pint --test -v",
-        "stan" : "phpstan analyze --ansi --xdebug",
-        "stan:github" : "phpstan analyze --ansi --xdebug --error-format=github",
+        "stan" : "phpstan analyze --ansi",
+        "stan:github" : "phpstan analyze --ansi --error-format=github",
         "test" : "pest",
         "test:coverage" : [
             "@putenv XDEBUG_MODE=coverage",
             "pest --coverage --coverage-text --coverage-clover=./build/coverage.xml --coverage-html=./build/coverage"
         ],
         "test:output" : "pest --disallow-test-output"
-    }
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/axelitus"
+        },
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/axelitus"
+        },
+        {
+            "type": "other",
+            "url": "https://www.buymeacoffee.com/axelitus"
+        }
+    ]
 }

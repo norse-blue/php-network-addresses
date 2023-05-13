@@ -5,13 +5,16 @@
 /.vagrant
 /.vscode
 /build
+/coverage
 /docs/.sass-cache
 /docs/_site
+/node_modules
 /vendor
 
 # Files
-*.phpunit.result.cache
 *.sublime-workspace
+.phpcs.xml
+.phpunit.result.cache
 composer.lock
-
-ray.php
+phpunit.xml
+phpstan.neon
